@@ -8,25 +8,31 @@ const input = Selector('#input'),
    edit = Selector('.fa-edit'),
    save = Selector('.fa-save'),
    savedItem = Selector('.unsavedCon ul li p'),
-   deleteIcon = Selector('.unsavedCon ul li i');
+   deleteIcon = Selector('.unsavedCon ul li i'),
+   err = Selector('form h5');
 
 form.addEventListener('submit', (e) => {
    e.preventDefault();
-   const liElement = document.createElement('li');
-   const pElement = document.createElement('p');
-   let inputValue = input.value;
-   pElement.textContent = inputValue;
-   const editElement = document.createElement('i');
-   editElement.className = 'far fa-edit';
-   const saveElement = document.createElement('i');
-   saveElement.className = 'far fa-save';
-   liElement.appendChild(pElement);
-   liElement.appendChild(editElement);
-   liElement.appendChild(saveElement);
-   const finalUnsavedLi = unsavedUl.appendChild(liElement);
-   editFunction(editElement, inputValue, finalUnsavedLi, pElement);
-   saveFunction(saveElement, inputValue, finalUnsavedLi);
-   input.value = '';
+   if (input.value.trim() !== '') {
+      const liElement = document.createElement('li');
+      const pElement = document.createElement('p');
+      let inputValue = input.value;
+      pElement.textContent = inputValue;
+      const editElement = document.createElement('i');
+      editElement.className = 'far fa-edit';
+      const saveElement = document.createElement('i');
+      saveElement.className = 'far fa-save';
+      liElement.appendChild(pElement);
+      liElement.appendChild(editElement);
+      liElement.appendChild(saveElement);
+      const finalUnsavedLi = unsavedUl.appendChild(liElement);
+      editFunction(editElement, inputValue, finalUnsavedLi, pElement);
+      saveFunction(saveElement, inputValue, finalUnsavedLi);
+      input.value = '';
+      err.textContent = '';
+   } else {
+      err.textContent = "Input can't be empty*";
+   }
 });
 
 const editFunction = (editElement, inputValue, finalUnsavedLi, pElement) => {
@@ -36,15 +42,31 @@ const editFunction = (editElement, inputValue, finalUnsavedLi, pElement) => {
       editableInput.className = 'editableInput';
       editableInput.value = inputValue;
       const finaleditableInput = finalUnsavedLi.appendChild(editableInput);
-      editabeInputRemoved(finaleditableInput, pElement, inputValue);
+      editabeInputRemoved(finaleditableInput, pElement, finalUnsavedLi);
    });
 };
 
-const editabeInputRemoved = (finaleditableInput, pElement, inputValue) => {
+const editabeInputRemoved = (finaleditableInput, pElement, finalUnsavedLi) => {
    finaleditableInput.addEventListener('change', () => {
       const finaleditableInputValue = finaleditableInput.value;
       pElement.textContent = finaleditableInputValue;
       finaleditableInput.remove();
+      finalUnsavedLi.remove();
+      // Creating new element
+      const liElement = document.createElement('li');
+      const paraElement = document.createElement('p');
+      let inputValue = finaleditableInputValue;
+      paraElement.textContent = inputValue;
+      const editElement = document.createElement('i');
+      editElement.className = 'far fa-edit';
+      const saveElement = document.createElement('i');
+      saveElement.className = 'far fa-save';
+      liElement.appendChild(paraElement);
+      liElement.appendChild(editElement);
+      liElement.appendChild(saveElement);
+      const finalUnsavedList = unsavedUl.appendChild(liElement);
+      editFunction(editElement, inputValue, finalUnsavedList, paraElement);
+      saveFunction(saveElement, inputValue, finalUnsavedList);
    });
 };
 

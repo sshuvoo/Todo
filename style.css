@@ -19,8 +19,9 @@ body {
    border-radius: 5px;
    width: 576px;
 }
-.unsavedCon ul {
-   height: 500px;
+.unsavedCon ul,
+.savedCon ul {
+   height: 300px;
    overflow-y: scroll;
 }
 /* width */
@@ -149,4 +150,21 @@ li {
 }
 .saved li p {
    grid-area: p;
+}
+
+form h5{
+   text-align: left;
+   width: 260px;
+   color: rgb(255, 0, 136);
+   margin: 5px auto 0px auto;
+}
+
+@media screen and (max-width: 576px) {
+   .todolist {
+      flex-wrap: wrap;
+   }
+   .unsaved,
+   .saved {
+      width: 100%;
+   }
 }
